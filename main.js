@@ -17,7 +17,7 @@ fs.readFile(process.argv[2], (err, data) => {
     img.src = data;
     const imageData = canvasToBitmap(imageToCanvas(img));
     const averageImageColor = geometrize_Util.getAverageImageColor(imageData);
-    const imageRunner = new geometrize_runner_ImageRunner(
+    const imageRunner = new ImageRunner(
         imageData,
         averageImageColor
     );
@@ -37,10 +37,10 @@ fs.readFile(process.argv[2], (err, data) => {
     }" height="${imageData.height}">
     <rect x="0" y="0" width="${imageData.width}" height="${
         imageData.height
-    }" ${geometrize_exporter_SvgExporter.fillForColor(
+    }" ${SvgExporter.fillForColor(
         averageImageColor
     )}></rect>
-    ${geometrize_exporter_SvgExporter.exportShapes(results)}
+    ${SvgExporter.exportShapes(results)}
     </svg>`;
     fs.writeFile('output.svg', output, err => {
         if (err) {
@@ -91,7 +91,7 @@ class GeometrizeWorker {
         switch (message.id) {
             case 'should_set_target_image':
             const target = message.data;
-            this.runner = new geometrize_runner_ImageRunner(
+            this.runner = new ImageRunner(
                 target,
                 geometrize_Util.getAverageImageColor(target)
             );
@@ -103,7 +103,7 @@ class GeometrizeWorker {
             case 'should_step':
             const options = message.data;
             const results = this.runner.step(options);
-            const svgData = geometrize_exporter_SvgExporter.exportShapes(results);
+            const svgData = SvgExporter.exportShapes(results);
             this.postMessage({
                 id: 'did_step',
                 data: svgData
@@ -139,8 +139,6 @@ class Std {
 }
 
 
-const _$UInt_UInt_$Impl_$ = {};
-_$UInt_UInt_$Impl_$.toFloat = $int => $int < 0 ? 4294967296.0 + $int : $int;
 
 const ArraySet = {};
 ArraySet.create = array => {
@@ -339,7 +337,7 @@ class geometrize_Core {
         while (_g1 < _g) {
             const i = _g1++;
             const state = new geometrize_State(
-                geometrize_shape_ShapeFactory.randomShapeOf(
+                ShapeFactory.randomShapeOf(
                     shapes,
                     current.width,
                     current.height
@@ -422,8 +420,8 @@ class geometrize_Core {
         }
         const lines = shape.rasterize();
         const color = geometrize_Core.computeColor(target, current, lines, alpha);
-        geometrize_rasterizer_Rasterizer.copyLines(buffer, current, lines);
-        geometrize_rasterizer_Rasterizer.drawLines(buffer, color, lines);
+        Rasterizer.copyLines(buffer, current, lines);
+        Rasterizer.drawLines(buffer, color, lines);
         return geometrize_Core.differencePartial(
             target,
             current,
@@ -510,7 +508,7 @@ class geometrize_Model {
             lines,
             alpha
         );
-        geometrize_rasterizer_Rasterizer.drawLines(this.current, color, lines);
+        Rasterizer.drawLines(this.current, color, lines);
         this.score = geometrize_Core.differencePartial(
             this.target,
             before,
@@ -612,14 +610,14 @@ class geometrize_bitmap_Bitmap {
     constructor() {}
 }
 
-class geometrize_exporter_SvgExporter {
+class SvgExporter {
     static exportShapes(shapes) {
         let results = '';
         let _g1 = 0;
         const _g = shapes.length;
         while (_g1 < _g) {
             const i = _g1++;
-            results += geometrize_exporter_SvgExporter.exportShape(shapes[i]);
+            results += SvgExporter.exportShape(shapes[i]);
             if (i != shapes.length - 1) {
                 results += '\n';
             }
@@ -629,22 +627,22 @@ class geometrize_exporter_SvgExporter {
 
     static exportShape(shape) {
         return shape.shape.getSvgShapeData().replace(
-            geometrize_exporter_SvgExporter.SVG_STYLE_HOOK,
-            geometrize_exporter_SvgExporter.stylesForShape(shape)
+            SvgExporter.SVG_STYLE_HOOK,
+            SvgExporter.stylesForShape(shape)
         );
     }
 
     static stylesForShape(shape) {
-        if (shape.shape instanceof geometrize_shape_Line) {
-            return `${geometrize_exporter_SvgExporter.strokeForColor(
+        if (shape.shape instanceof LineShape) {
+            return `${SvgExporter.strokeForColor(
                 shape.color
-            )} stroke-width="1" fill="none" ${geometrize_exporter_SvgExporter.strokeOpacityForAlpha(
+            )} stroke-width="1" fill="none" ${SvgExporter.strokeOpacityForAlpha(
                 shape.color & 255
             )}`;
         } else {
-            return `${geometrize_exporter_SvgExporter.fillForColor(
+            return `${SvgExporter.fillForColor(
                 shape.color
-            )} ${geometrize_exporter_SvgExporter.fillOpacityForAlpha(
+            )} ${SvgExporter.fillOpacityForAlpha(
                 shape.color & 255
             )}`;
         }
@@ -658,11 +656,11 @@ class geometrize_exporter_SvgExporter {
     }
 
     static strokeForColor(color) {
-        return `stroke="${geometrize_exporter_SvgExporter.rgbForColor(color)}"`;
+        return `stroke="${SvgExporter.rgbForColor(color)}"`;
     }
 
     static fillForColor(color) {
-        return `fill="${geometrize_exporter_SvgExporter.rgbForColor(color)}"`;
+        return `fill="${SvgExporter.rgbForColor(color)}"`;
     }
 
     static fillOpacityForAlpha(alpha) {
@@ -679,7 +677,7 @@ class geometrize_exporter_SvgExporter {
     }
 }
 
-class geometrize_rasterizer_Rasterizer {
+class Rasterizer {
     static drawLines(image, c, lines) {
         if (image === null) {
             throw new Error('FAIL: image != null');
@@ -720,21 +718,21 @@ class geometrize_rasterizer_Rasterizer {
                 const db = (d >> 8) & 255;
                 const da = d & 255;
                 const r =
-                ((_$UInt_UInt_$Impl_$.toFloat(dr * a + sr * ma) / m) |
+                ((parseFloat(dr * a + sr * ma) / m) |
                 0) >>
                 8;
                 const g =
-                ((_$UInt_UInt_$Impl_$.toFloat(dg * a + sg * ma) /
+                ((parseFloat(dg * a + sg * ma) /
                 m) |
                 0) >>
                 8;
                 const b =
-                ((_$UInt_UInt_$Impl_$.toFloat(db * a + sb * ma) /
+                ((parseFloat(db * a + sb * ma) /
                 m) |
                 0) >>
                 8;
                 const a1 =
-                ((_$UInt_UInt_$Impl_$.toFloat(da * a + sa * ma) /
+                ((parseFloat(da * a + sa * ma) /
                 m) |
                 0) >>
                 8;
@@ -825,7 +823,7 @@ class geometrize_rasterizer_Rasterizer {
             const i = _g1++;
             const p1 = points[i];
             const p2 = i == points.length - 1 ? points[0] : points[i + 1];
-            const p1p2 = geometrize_rasterizer_Rasterizer.bresenham(
+            const p1p2 = Rasterizer.bresenham(
                 p1.x,
                 p1.y,
                 p2.x,
@@ -877,7 +875,7 @@ class geometrize_rasterizer_Rasterizer {
                 };
             }
             lines.push(
-                new geometrize_rasterizer_Scanline(
+                new Scanline(
                     key1,
                     minMaxElements.x,
                     minMaxElements.y
@@ -888,7 +886,7 @@ class geometrize_rasterizer_Rasterizer {
     }
 }
 
-class geometrize_rasterizer_Scanline {
+class Scanline {
     constructor(y, x1, x2) {
         this.y = y;
         this.x1 = x1;
@@ -902,7 +900,7 @@ class geometrize_rasterizer_Scanline {
         const w1 = w;
         const h1 = h;
         return scanlines.filter(a1 =>
-            geometrize_rasterizer_Scanline.trimHelper(a1, w1, h1)
+            Scanline.trimHelper(a1, w1, h1)
         );
     }
 
@@ -926,7 +924,7 @@ class geometrize_rasterizer_Scanline {
     }
 }
 
-class geometrize_runner_ImageRunner {
+class ImageRunner {
     constructor(inputImage, backgroundColor) {
         this.model = null;
         this.model = new geometrize_Model(inputImage, backgroundColor);
@@ -942,9 +940,9 @@ class geometrize_runner_ImageRunner {
     }
 }
 
-const geometrize_shape_Shape = () => {};
+const Shape = () => {};
 
-class geometrize_shape_Ellipse {
+class EllipseShape {
     constructor(xBound, yBound) {
         this.x = Std.random(xBound);
         this.y = Std.random(yBound);
@@ -978,10 +976,10 @@ class geometrize_shape_Ellipse {
                 x2 = w - 1;
             }
             if (y1 >= 0 && y1 < h) {
-                lines.push(new geometrize_rasterizer_Scanline(y1, x1, x2));
+                lines.push(new Scanline(y1, x1, x2));
             }
             if (y2 >= 0 && y2 < h && dy > 0) {
-                lines.push(new geometrize_rasterizer_Scanline(y2, x1, x2));
+                lines.push(new Scanline(y2, x1, x2));
             }
         }
         return lines;
@@ -1024,7 +1022,7 @@ class geometrize_shape_Ellipse {
     }
 
     clone() {
-        const ellipse = new geometrize_shape_Ellipse(this.xBound, this.yBound);
+        const ellipse = new EllipseShape(this.xBound, this.yBound);
         ellipse.x = this.x;
         ellipse.y = this.y;
         ellipse.rx = this.rx;
@@ -1035,19 +1033,19 @@ class geometrize_shape_Ellipse {
     getSvgShapeData() {
         return `<ellipse cx="${this.x}" cy="${this.y}" rx="${this.rx}" ry="${
             this.ry
-        }" ${geometrize_exporter_SvgExporter.SVG_STYLE_HOOK} />`;
+        }" ${SvgExporter.SVG_STYLE_HOOK} />`;
     }
 }
 
-geometrize_shape_Ellipse.__interfaces__ = [geometrize_shape_Shape];
-const geometrize_shape_Circle = function(xBound, yBound) {
-    geometrize_shape_Ellipse.call(this, xBound, yBound);
+EllipseShape.__interfaces__ = [Shape];
+const CircleShape = function(xBound, yBound) {
+    EllipseShape.call(this, xBound, yBound);
     this.rx = Std.random(32) + 1;
     this.ry = this.rx;
 };
-geometrize_shape_Circle.__super__ = geometrize_shape_Ellipse;
-geometrize_shape_Circle.prototype = $extend(
-    geometrize_shape_Ellipse.prototype,
+CircleShape.__super__ = EllipseShape;
+CircleShape.prototype = $extend(
+    EllipseShape.prototype,
     {
         mutate() {
             const r = Std.random(2);
@@ -1079,7 +1077,7 @@ geometrize_shape_Circle.prototype = $extend(
             }
         },
         clone() {
-            const circle = new geometrize_shape_Circle(this.xBound, this.yBound);
+            const circle = new CircleShape(this.xBound, this.yBound);
             circle.x = this.x;
             circle.y = this.y;
             circle.rx = this.rx;
@@ -1088,13 +1086,13 @@ geometrize_shape_Circle.prototype = $extend(
         },
         getSvgShapeData() {
             return `<circle cx="${this.x}" cy="${this.y}" r="${this.rx}" ${
-                geometrize_exporter_SvgExporter.SVG_STYLE_HOOK
+                SvgExporter.SVG_STYLE_HOOK
             } />`;
         }
     }
 );
 
-class geometrize_shape_Line {
+class LineShape {
     constructor(xBound, yBound) {
         this.x1 = Std.random(xBound);
         this.y1 = Std.random(yBound);
@@ -1114,7 +1112,7 @@ class geometrize_shape_Line {
 
     rasterize() {
         const lines = [];
-        const points = geometrize_rasterizer_Rasterizer.bresenham(
+        const points = Rasterizer.bresenham(
             this.x1,
             this.y1,
             this.x2,
@@ -1124,9 +1122,9 @@ class geometrize_shape_Line {
         while (_g < points.length) {
             const point = points[_g];
             ++_g;
-            lines.push(new geometrize_rasterizer_Scanline(point.y, point.x, point.x));
+            lines.push(new Scanline(point.y, point.x, point.x));
         }
-        return geometrize_rasterizer_Scanline.trim(lines, this.xBound, this.yBound);
+        return Scanline.trim(lines, this.xBound, this.yBound);
     }
 
     mutate() {
@@ -1164,7 +1162,7 @@ class geometrize_shape_Line {
     }
 
     clone() {
-        const line = new geometrize_shape_Line(this.xBound, this.yBound);
+        const line = new LineShape(this.xBound, this.yBound);
         line.x1 = this.x1;
         line.y1 = this.y1;
         line.x2 = this.x2;
@@ -1175,13 +1173,13 @@ class geometrize_shape_Line {
     getSvgShapeData() {
         return `<line x1="${this.x1}" y1="${this.y1}" x2="${this.x2}" y2="${
             this.y2
-        }" ${geometrize_exporter_SvgExporter.SVG_STYLE_HOOK} />`;
+        }" ${SvgExporter.SVG_STYLE_HOOK} />`;
     }
 }
 
-geometrize_shape_Line.__interfaces__ = [geometrize_shape_Shape];
+LineShape.__interfaces__ = [Shape];
 
-class geometrize_shape_Rectangle {
+class RectangleShape {
     constructor(xBound, yBound) {
         this.x1 = Std.random(xBound);
         this.y1 = Std.random(yBound);
@@ -1213,7 +1211,7 @@ class geometrize_shape_Rectangle {
                 const first1 = this.x1;
                 const second1 = this.x2;
                 lines.push(
-                    new geometrize_rasterizer_Scanline(
+                    new Scanline(
                         y,
                         first < second ? first : second,
                         first1 > second1 ? first1 : second1
@@ -1259,7 +1257,7 @@ class geometrize_shape_Rectangle {
     }
 
     clone() {
-        const rectangle = new geometrize_shape_Rectangle(this.xBound, this.yBound);
+        const rectangle = new RectangleShape(this.xBound, this.yBound);
         rectangle.x1 = this.x1;
         rectangle.y1 = this.y1;
         rectangle.x2 = this.x2;
@@ -1286,14 +1284,14 @@ class geometrize_shape_Rectangle {
             (first3 < second3 ? first3 : second3)}" height="${(first4 > second4
                 ? first4
                 : second4) - (first5 < second5 ? first5 : second5)}" ${
-                    geometrize_exporter_SvgExporter.SVG_STYLE_HOOK
+                    SvgExporter.SVG_STYLE_HOOK
                 } />`;
     }
 }
 
-geometrize_shape_Rectangle.__interfaces__ = [geometrize_shape_Shape];
+RectangleShape.__interfaces__ = [Shape];
 
-class geometrize_shape_RotatedEllipse {
+class RotatedEllipseShape {
     constructor(xBound, yBound) {
         this.x = Std.random(xBound);
         this.y = Std.random(yBound);
@@ -1324,8 +1322,8 @@ class geometrize_shape_RotatedEllipse {
                 y: ty
             });
         }
-        return geometrize_rasterizer_Scanline.trim(
-            geometrize_rasterizer_Rasterizer.scanlinesForPolygon(points),
+        return Scanline.trim(
+            Rasterizer.scanlinesForPolygon(points),
             this.xBound,
             this.yBound
         );
@@ -1372,7 +1370,7 @@ class geometrize_shape_RotatedEllipse {
     }
 
     clone() {
-        const ellipse = new geometrize_shape_RotatedEllipse(
+        const ellipse = new RotatedEllipseShape(
             this.xBound,
             this.yBound
         );
@@ -1389,16 +1387,16 @@ class geometrize_shape_RotatedEllipse {
             this.angle
         }) scale(${this.rx} ${this.ry})">`;
         s += `<ellipse cx="${0}" cy="${0}" rx="${1}" ry="${1}" ${
-            geometrize_exporter_SvgExporter.SVG_STYLE_HOOK
+            SvgExporter.SVG_STYLE_HOOK
         } />`;
         s += '</g>';
         return s;
     }
 }
 
-geometrize_shape_RotatedEllipse.__interfaces__ = [geometrize_shape_Shape];
+RotatedEllipseShape.__interfaces__ = [Shape];
 
-class geometrize_shape_RotatedRectangle {
+class RotatedRectangleShape {
     constructor(xBound, yBound) {
         this.x1 = Std.random(xBound);
         this.y1 = Std.random(yBound);
@@ -1447,8 +1445,8 @@ class geometrize_shape_RotatedRectangle {
         const ury = (ox2 * s + oy1 * c + cy) | 0;
         const brx = (ox2 * c - oy2 * s + cx) | 0;
         const bry = (ox2 * s + oy2 * c + cy) | 0;
-        return geometrize_rasterizer_Scanline.trim(
-            geometrize_rasterizer_Rasterizer.scanlinesForPolygon([
+        return Scanline.trim(
+            Rasterizer.scanlinesForPolygon([
                 {
                     x: ulx,
                     y: uly
@@ -1510,7 +1508,7 @@ class geometrize_shape_RotatedRectangle {
     }
 
     clone() {
-        const rectangle = new geometrize_shape_RotatedRectangle(
+        const rectangle = new RotatedRectangleShape(
             this.xBound,
             this.yBound
         );
@@ -1580,30 +1578,30 @@ class geometrize_shape_RotatedRectangle {
                 s1 += ' ';
             }
         }
-        s1 += `" ${geometrize_exporter_SvgExporter.SVG_STYLE_HOOK}/>`;
+        s1 += `" ${SvgExporter.SVG_STYLE_HOOK}/>`;
         return s1;
     }
 }
 
-geometrize_shape_RotatedRectangle.__interfaces__ = [geometrize_shape_Shape];
+RotatedRectangleShape.__interfaces__ = [Shape];
 
-class geometrize_shape_ShapeFactory {
+class ShapeFactory {
     static create(type, xBound, yBound) {
         switch (type) {
             case 0:
-            return new geometrize_shape_Rectangle(xBound, yBound);
+            return new RectangleShape(xBound, yBound);
             case 1:
-            return new geometrize_shape_RotatedRectangle(xBound, yBound);
+            return new RotatedRectangleShape(xBound, yBound);
             case 2:
-            return new geometrize_shape_Triangle(xBound, yBound);
+            return new TriangleShape(xBound, yBound);
             case 3:
-            return new geometrize_shape_Ellipse(xBound, yBound);
+            return new EllipseShape(xBound, yBound);
             case 4:
-            return new geometrize_shape_RotatedEllipse(xBound, yBound);
+            return new RotatedEllipseShape(xBound, yBound);
             case 5:
-            return new geometrize_shape_Circle(xBound, yBound);
+            return new CircleShape(xBound, yBound);
             case 6:
-            return new geometrize_shape_Line(xBound, yBound);
+            return new LineShape(xBound, yBound);
         }
     }
 
@@ -1615,7 +1613,7 @@ class geometrize_shape_ShapeFactory {
         if (0 > upper) {
             throw new Error('FAIL: lower <= upper');
         }
-        return geometrize_shape_ShapeFactory.create(
+        return ShapeFactory.create(
             types[Std.random(upper+1)],
             xBound,
             yBound
@@ -1623,7 +1621,7 @@ class geometrize_shape_ShapeFactory {
     }
 }
 
-class geometrize_shape_Triangle {
+class TriangleShape {
     constructor(xBound, yBound) {
         this.x1 = Std.random(xBound);
         this.y1 = Std.random(yBound);
@@ -1636,8 +1634,8 @@ class geometrize_shape_Triangle {
     }
 
     rasterize() {
-        return geometrize_rasterizer_Scanline.trim(
-            geometrize_rasterizer_Rasterizer.scanlinesForPolygon([
+        return Scanline.trim(
+            Rasterizer.scanlinesForPolygon([
                 {
                     x: this.x1,
                     y: this.y1
@@ -1705,7 +1703,7 @@ class geometrize_shape_Triangle {
     }
 
     clone() {
-        const triangle = new geometrize_shape_Triangle(this.xBound, this.yBound);
+        const triangle = new TriangleShape(this.xBound, this.yBound);
         triangle.x1 = this.x1;
         triangle.y1 = this.y1;
         triangle.x2 = this.x2;
@@ -1718,11 +1716,11 @@ class geometrize_shape_Triangle {
     getSvgShapeData() {
         return `<polygon points="${this.x1},${this.y1} ${this.x2},${this.y2} ${
             this.x3
-        },${this.y3}" ${geometrize_exporter_SvgExporter.SVG_STYLE_HOOK}/>`;
+        },${this.y3}" ${SvgExporter.SVG_STYLE_HOOK}/>`;
     }
 }
 
-geometrize_shape_Triangle.__interfaces__ = [geometrize_shape_Shape];
+TriangleShape.__interfaces__ = [Shape];
 const haxe_IMap = () => {};
 
 class haxe_ds_IntMap {
@@ -1744,4 +1742,4 @@ haxe_ds_IntMap.__interfaces__ = [haxe_IMap];
 
 
 onmessage = GeometrizeWorker.prototype.messageHandler;
-geometrize_exporter_SvgExporter.SVG_STYLE_HOOK = '::svg_style_hook::';
+SvgExporter.SVG_STYLE_HOOK = '::svg_style_hook::';
