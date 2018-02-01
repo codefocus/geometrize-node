@@ -1031,9 +1031,18 @@ class EllipseShape {
     }
 
     getSvgShapeData() {
-        return `<ellipse cx="${this.x}" cy="${this.y}" rx="${this.rx}" ry="${
-            this.ry
-        }" ${SvgExporter.SVG_STYLE_HOOK} />`;
+        let svgString = '<ellipse';
+        if (parseInt(this.x) > 0) {
+            svgString += ' cx="' + this.x + '"';
+        }
+        if (parseInt(this.y) > 0) {
+            svgString += ' cy="' + this.y + '"';
+        }
+
+        svgString += `rx="${this.rx}" ry="${this.ry}" ${SvgExporter.SVG_STYLE_HOOK} />`;
+
+
+        return svgString;
     }
 }
 
@@ -1383,14 +1392,20 @@ class RotatedEllipseShape {
     }
 
     getSvgShapeData() {
-        let s = `<g transform="translate(${this.x} ${this.y}) rotate(${
-            this.angle
-        }) scale(${this.rx} ${this.ry})">`;
-        s += `<ellipse cx="${0}" cy="${0}" rx="${1}" ry="${1}" ${
+        let svgString = '<g transform="';
+        if (parseInt(this.x) != 0 || parseInt(this.y) != 0) {
+            svgString += 'translate(' + this.x + ' ' + this.y + ') ';
+        }
+        if (parseInt(this.angle) != 0) {
+            svgString += 'rotate(' + this.angle + ') ';
+        }
+        svgString += ` scale(${this.rx} ${this.ry})">`;
+        svgString += `<ellipse rx="${1}" ry="${1}" ${
             SvgExporter.SVG_STYLE_HOOK
         } />`;
-        s += '</g>';
-        return s;
+        svgString += '</g>';
+
+        return svgString;
     }
 }
 
