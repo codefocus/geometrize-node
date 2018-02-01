@@ -88,8 +88,7 @@ class GeometrizeWorker {
             return;
         }
         const message = event.data;
-        const _g = message.id;
-        switch (_g) {
+        switch (message.id) {
             case 'should_set_target_image':
             const target = message.data;
             this.runner = new geometrize_runner_ImageRunner(
@@ -116,7 +115,15 @@ class GeometrizeWorker {
     postMessage(message) {}
 }
 
-class HxOverrides {
+class Std {
+    static random(x) {
+        if (x <= 0) {
+            return 0;
+        } else {
+            return Math.floor(Math.random() * x);
+        }
+    }
+
     static iter(a) {
         return {
             cur: 0,
@@ -131,39 +138,29 @@ class HxOverrides {
     }
 }
 
-class Std {
-    static random(x) {
-        if (x <= 0) {
-            return 0;
-        } else {
-            return Math.floor(Math.random() * x);
-        }
-    }
-}
-
 
 const _$UInt_UInt_$Impl_$ = {};
 _$UInt_UInt_$Impl_$.toFloat = $int => $int < 0 ? 4294967296.0 + $int : $int;
 
-const geometrize__$ArraySet_ArraySet_$Impl_$ = {};
-geometrize__$ArraySet_ArraySet_$Impl_$.create = array => {
+const ArraySet = {};
+ArraySet.create = array => {
     if (array == null) {
         const this1 = [];
         return this1;
     }
-    return geometrize__$ArraySet_ArraySet_$Impl_$.toSet(array);
+    return ArraySet.toSet(array);
 };
-geometrize__$ArraySet_ArraySet_$Impl_$.add = (this1, element) => {
+ArraySet.add = (this1, element) => {
     if (!(element != null)) {
-        throw new js__$Boot_HaxeError('FAIL: element != null');
+        throw new Error('FAIL: element != null');
     }
-    if (geometrize__$ArraySet_ArraySet_$Impl_$.contains(this1, element)) {
+    if (ArraySet.contains(this1, element)) {
         return false;
     }
     this1.push(element);
     return true;
 };
-geometrize__$ArraySet_ArraySet_$Impl_$.contains = (this1, element) => {
+ArraySet.contains = (this1, element) => {
     let _g = 0;
     while (_g < this1.length) {
         const i = this1[_g];
@@ -174,15 +171,15 @@ geometrize__$ArraySet_ArraySet_$Impl_$.contains = (this1, element) => {
     }
     return false;
 };
-geometrize__$ArraySet_ArraySet_$Impl_$.toArray = this1 => this1.slice();
-geometrize__$ArraySet_ArraySet_$Impl_$.toSet = array => {
+ArraySet.toArray = this1 => this1.slice();
+ArraySet.toSet = array => {
     const this1 = [];
     const set = this1;
     let _g = 0;
     while (_g < array.length) {
         const v = array[_g];
         ++_g;
-        geometrize__$ArraySet_ArraySet_$Impl_$.add(set, v);
+        ArraySet.add(set, v);
     }
     return set;
 };
@@ -190,16 +187,16 @@ geometrize__$ArraySet_ArraySet_$Impl_$.toSet = array => {
 class geometrize_Core {
     static computeColor(target, current, lines, alpha) {
         if (target === null) {
-            throw new js__$Boot_HaxeError('FAIL: target != null');
+            throw new Error('FAIL: target != null');
         }
         if (!(current != null)) {
-            throw new js__$Boot_HaxeError('FAIL: current != null');
+            throw new Error('FAIL: current != null');
         }
         if (!(lines != null)) {
-            throw new js__$Boot_HaxeError('FAIL: lines != null');
+            throw new Error('FAIL: lines != null');
         }
         if (!(alpha >= 0)) {
-            throw new js__$Boot_HaxeError('FAIL: alpha >= 0');
+            throw new Error('FAIL: alpha >= 0');
         }
         let totalRed = 0;
         let totalGreen = 0;
@@ -246,22 +243,22 @@ class geometrize_Core {
 
     static differenceFull(first, second) {
         if (first === null) {
-            throw new js__$Boot_HaxeError('FAIL: first != null');
+            throw new Error('FAIL: first != null');
         }
         if (second === null) {
-            throw new js__$Boot_HaxeError('FAIL: second != null');
+            throw new Error('FAIL: second != null');
         }
         const actual = first.width;
         const expected = second.width;
         if (actual != expected) {
-            throw new js__$Boot_HaxeError(
+            throw new Error(
                 `FAIL: values are not equal (expected: ${expected}, actual: ${actual})`
             );
         }
         const actual1 = first.height;
         const expected1 = second.height;
         if (actual1 != expected1) {
-            throw new js__$Boot_HaxeError(
+            throw new Error(
                 `FAIL: values are not equal (expected: ${expected1}, actual: ${
                     actual1
                 })`
@@ -292,16 +289,16 @@ class geometrize_Core {
 
     static differencePartial(target, before, after, score, lines) {
         if (target === null) {
-            throw new js__$Boot_HaxeError('FAIL: target != null');
+            throw new Error('FAIL: target != null');
         }
         if (before === null) {
-            throw new js__$Boot_HaxeError('FAIL: before != null');
+            throw new Error('FAIL: before != null');
         }
         if (after === null) {
-            throw new js__$Boot_HaxeError('FAIL: after != null');
+            throw new Error('FAIL: after != null');
         }
         if (lines === null) {
-            throw new js__$Boot_HaxeError('FAIL: lines != null');
+            throw new Error('FAIL: lines != null');
         }
         const width = target.width;
         const height = target.height;
@@ -386,10 +383,10 @@ class geometrize_Core {
 
     static hillClimb(state, maxAge, lastScore) {
         if (!(state != null)) {
-            throw new js__$Boot_HaxeError('FAIL: state != null');
+            throw new Error('FAIL: state != null');
         }
         if (!(maxAge >= 0)) {
-            throw new js__$Boot_HaxeError('FAIL: maxAge >= 0');
+            throw new Error('FAIL: maxAge >= 0');
         }
         let state1 = state.clone();
         let bestState = state1.clone();
@@ -412,16 +409,16 @@ class geometrize_Core {
 
     static energy(shape, alpha, target, current, buffer, score) {
         if (shape === null) {
-            throw new js__$Boot_HaxeError('FAIL: shape != null');
+            throw new Error('FAIL: shape != null');
         }
         if (target === null) {
-            throw new js__$Boot_HaxeError('FAIL: target != null');
+            throw new Error('FAIL: target != null');
         }
         if (current === null) {
-            throw new js__$Boot_HaxeError('FAIL: current != null');
+            throw new Error('FAIL: current != null');
         }
         if (buffer === null) {
-            throw new js__$Boot_HaxeError('FAIL: buffer != null');
+            throw new Error('FAIL: buffer != null');
         }
         const lines = shape.rasterize();
         const color = geometrize_Core.computeColor(target, current, lines, alpha);
@@ -440,7 +437,7 @@ class geometrize_Core {
 class geometrize_Model {
     constructor(target, backgroundColor) {
         if (target === null) {
-            throw new js__$Boot_HaxeError('FAIL: target != null');
+            throw new Error('FAIL: target != null');
         }
         this.width = target.width;
         this.height = target.height;
@@ -490,7 +487,7 @@ class geometrize_Model {
 
     addShape(shape, alpha) {
         if (shape === null) {
-            throw new js__$Boot_HaxeError('FAIL: shape != null');
+            throw new Error('FAIL: shape != null');
         }
         const _this = this.current;
         const bitmap = new geometrize_bitmap_Bitmap();
@@ -532,7 +529,7 @@ class geometrize_Model {
 class geometrize_State {
     constructor(shape, alpha, target, current, buffer) {
         if (shape === null) {
-            throw new js__$Boot_HaxeError('FAIL: shape != null');
+            throw new Error('FAIL: shape != null');
         }
         this.shape = shape;
         this.alpha = alpha;
@@ -576,7 +573,7 @@ class geometrize_State {
 class geometrize_Util {
     static getAverageImageColor(image) {
         if (image === null) {
-            throw new js__$Boot_HaxeError('FAIL: image != null');
+            throw new Error('FAIL: image != null');
         }
         let totalRed = 0;
         let totalGreen = 0;
@@ -685,10 +682,10 @@ class geometrize_exporter_SvgExporter {
 class geometrize_rasterizer_Rasterizer {
     static drawLines(image, c, lines) {
         if (image === null) {
-            throw new js__$Boot_HaxeError('FAIL: image != null');
+            throw new Error('FAIL: image != null');
         }
         if (!(lines != null)) {
-            throw new js__$Boot_HaxeError('FAIL: lines != null');
+            throw new Error('FAIL: lines != null');
         }
         let sr = (c >> 24) & 255;
         sr |= sr << 8;
@@ -752,13 +749,13 @@ class geometrize_rasterizer_Rasterizer {
 
     static copyLines(destination, source, lines) {
         if (!(destination != null)) {
-            throw new js__$Boot_HaxeError('FAIL: destination != null');
+            throw new Error('FAIL: destination != null');
         }
         if (!(source != null)) {
-            throw new js__$Boot_HaxeError('FAIL: source != null');
+            throw new Error('FAIL: source != null');
         }
         if (!(lines != null)) {
-            throw new js__$Boot_HaxeError('FAIL: lines != null');
+            throw new Error('FAIL: lines != null');
         }
         let _g = 0;
         while (_g < lines.length) {
@@ -843,17 +840,17 @@ class geometrize_rasterizer_Rasterizer {
             ++_g2;
             let s = yToXs.h[point.y];
             if (s != null) {
-                geometrize__$ArraySet_ArraySet_$Impl_$.add(s, point.x);
+                ArraySet.add(s, point.x);
             } else {
-                s = geometrize__$ArraySet_ArraySet_$Impl_$.create();
-                geometrize__$ArraySet_ArraySet_$Impl_$.add(s, point.x);
+                s = ArraySet.create();
+                ArraySet.add(s, point.x);
                 yToXs.h[point.y] = s;
             }
         }
         const key = yToXs.keys();
         while (key.hasNext()) {
             const key1 = key.next();
-            const a = geometrize__$ArraySet_ArraySet_$Impl_$.toArray(yToXs.h[key1]);
+            const a = ArraySet.toArray(yToXs.h[key1]);
             let minMaxElements;
             if (a == null || a.length == 0) {
                 minMaxElements = {
@@ -900,7 +897,7 @@ class geometrize_rasterizer_Scanline {
 
     static trim(scanlines, w, h) {
         if (!(scanlines != null)) {
-            throw new js__$Boot_HaxeError('FAIL: scanlines != null');
+            throw new Error('FAIL: scanlines != null');
         }
         const w1 = w;
         const h1 = h;
@@ -916,13 +913,13 @@ class geometrize_rasterizer_Scanline {
         const value = line.x1;
         const max = w - 1;
         if (0 > max) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         line.x1 = value < 0 ? 0 : value > max ? max : value;
         const value1 = line.x2;
         const max1 = w - 1;
         if (0 > max1) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         line.x2 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
         return line.x1 <= line.x2;
@@ -997,13 +994,13 @@ class geometrize_shape_Ellipse {
             const value = this.x + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x = value < 0 ? 0 : value > max ? max : value;
             const value1 = this.y + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
@@ -1011,7 +1008,7 @@ class geometrize_shape_Ellipse {
             const value2 = this.rx + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (1 > max2) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.rx = value2 < 1 ? 1 : value2 > max2 ? max2 : value2;
             break;
@@ -1019,7 +1016,7 @@ class geometrize_shape_Ellipse {
             const value3 = this.ry + (-16 + Std.random(33));
             const max3 = this.xBound - 1;
             if (1 > max3) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.ry = value3 < 1 ? 1 : value3 > max3 ? max3 : value3;
             break;
@@ -1059,13 +1056,13 @@ geometrize_shape_Circle.prototype = $extend(
                 const value = this.x + (-16 + Std.random(33));
                 const max = this.xBound - 1;
                 if (0 > max) {
-                    throw new js__$Boot_HaxeError('FAIL: min <= max');
+                    throw new Error('FAIL: min <= max');
                 }
                 this.x = value < 0 ? 0 : value > max ? max : value;
                 const value1 = this.y + (-16 + Std.random(33));
                 const max1 = this.yBound - 1;
                 if (0 > max1) {
-                    throw new js__$Boot_HaxeError('FAIL: min <= max');
+                    throw new Error('FAIL: min <= max');
                 }
                 this.y = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
                 break;
@@ -1073,7 +1070,7 @@ geometrize_shape_Circle.prototype = $extend(
                 const value2 = this.rx + (-16 + Std.random(33));
                 const max2 = this.xBound - 1;
                 if (1 > max2) {
-                    throw new js__$Boot_HaxeError('FAIL: min <= max');
+                    throw new Error('FAIL: min <= max');
                 }
                 const r1 = value2 < 1 ? 1 : value2 > max2 ? max2 : value2;
                 this.rx = r1;
@@ -1103,12 +1100,12 @@ class geometrize_shape_Line {
         this.y1 = Std.random(yBound);
         const value = this.x1 + Std.random(32) + 1;
         if (0 > xBound) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         this.x2 = value < 0 ? 0 : value > xBound ? xBound : value;
         const value1 = this.y1 + Std.random(32) + 1;
         if (0 > yBound) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         this.y2 = value1 < 0 ? 0 : value1 > yBound ? yBound : value1;
         this.xBound = xBound;
@@ -1139,13 +1136,13 @@ class geometrize_shape_Line {
             const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
             const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
@@ -1153,13 +1150,13 @@ class geometrize_shape_Line {
             const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
             const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y2 = value3 < 0 ? 0 : value3 > max3 ? max3 : value3;
             break;
@@ -1191,13 +1188,13 @@ class geometrize_shape_Rectangle {
         const value = this.x1 + Std.random(32) + 1;
         const max = xBound - 1;
         if (0 > max) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         this.x2 = value < 0 ? 0 : value > max ? max : value;
         const value1 = this.y1 + Std.random(32) + 1;
         const max1 = yBound - 1;
         if (0 > max1) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         this.y2 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
         this.xBound = xBound;
@@ -1234,13 +1231,13 @@ class geometrize_shape_Rectangle {
             const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
             const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
@@ -1248,13 +1245,13 @@ class geometrize_shape_Rectangle {
             const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
             const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y2 = value3 < 0 ? 0 : value3 > max3 ? max3 : value3;
             break;
@@ -1341,13 +1338,13 @@ class geometrize_shape_RotatedEllipse {
             const value = this.x + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x = value < 0 ? 0 : value > max ? max : value;
             const value1 = this.y + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
@@ -1355,7 +1352,7 @@ class geometrize_shape_RotatedEllipse {
             const value2 = this.rx + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (1 > max2) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.rx = value2 < 1 ? 1 : value2 > max2 ? max2 : value2;
             break;
@@ -1363,7 +1360,7 @@ class geometrize_shape_RotatedEllipse {
             const value3 = this.ry + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (1 > max3) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.ry = value3 < 1 ? 1 : value3 > max3 ? max3 : value3;
             break;
@@ -1407,12 +1404,12 @@ class geometrize_shape_RotatedRectangle {
         this.y1 = Std.random(yBound);
         const value = this.x1 + Std.random(32) + 1;
         if (xBound <= 0) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         this.x2 = value < 0 ? 0 : value > xBound ? xBound : value;
         const value1 = this.y1 + Std.random(32) + 1;
         if (yBound <= 0) {
-            throw new js__$Boot_HaxeError('FAIL: min <= max');
+            throw new Error('FAIL: min <= max');
         }
         this.y2 = value1 < 0 ? 0 : value1 > yBound ? yBound : value1;
         this.angle = Math.floor(361 * Math.random());
@@ -1481,13 +1478,13 @@ class geometrize_shape_RotatedRectangle {
             const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
             const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
@@ -1495,13 +1492,13 @@ class geometrize_shape_RotatedRectangle {
             const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
             const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y2 = value3 < 0 ? 0 : value3 > max3 ? max3 : value3;
             break;
@@ -1612,11 +1609,11 @@ class geometrize_shape_ShapeFactory {
 
     static randomShapeOf(types, xBound, yBound) {
         if (!(types != null && types.length > 0)) {
-            throw new js__$Boot_HaxeError('FAIL: a != null && a.length > 0');
+            throw new Error('FAIL: a != null && a.length > 0');
         }
         const upper = types.length - 1;
         if (0 > upper) {
-            throw new js__$Boot_HaxeError('FAIL: lower <= upper');
+            throw new Error('FAIL: lower <= upper');
         }
         return geometrize_shape_ShapeFactory.create(
             types[Std.random(upper+1)],
@@ -1666,13 +1663,13 @@ class geometrize_shape_Triangle {
             const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
             const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
@@ -1680,13 +1677,13 @@ class geometrize_shape_Triangle {
             const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
             const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y2 = value3 < 0 ? 0 : value3 > max3 ? max3 : value3;
             break;
@@ -1694,13 +1691,13 @@ class geometrize_shape_Triangle {
             const value4 = this.x3 + (-16 + Std.random(33));
             const max4 = this.xBound - 1;
             if (0 > max4) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.x3 = value4 < 0 ? 0 : value4 > max4 ? max4 : value4;
             const value5 = this.y3 + (-16 + Std.random(33));
             const max5 = this.yBound - 1;
             if (0 > max5) {
-                throw new js__$Boot_HaxeError('FAIL: min <= max');
+                throw new Error('FAIL: min <= max');
             }
             this.y3 = value5 < 0 ? 0 : value5 > max5 ? max5 : value5;
             break;
@@ -1739,32 +1736,12 @@ class haxe_ds_IntMap {
         if (this.h.hasOwnProperty(key)) {
             a.push(key | 0);
         }
-        return HxOverrides.iter(a);
+        return Std.iter(a);
     }
 }
 
 haxe_ds_IntMap.__interfaces__ = [haxe_IMap];
 
-class js__$Boot_HaxeError {
-    constructor(val) {
-        Error.call(this);
-        this.val = val;
-        this.message = String(val);
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, js__$Boot_HaxeError);
-        }
-    }
 
-    static wrap(val) {
-        if (val instanceof Error) {
-            return val;
-        } else {
-            return new js__$Boot_HaxeError(val);
-        }
-    }
-}
-
-js__$Boot_HaxeError.__super__ = Error;
-js__$Boot_HaxeError.prototype = $extend(Error.prototype, {});
 onmessage = GeometrizeWorker.prototype.messageHandler;
 geometrize_exporter_SvgExporter.SVG_STYLE_HOOK = '::svg_style_hook::';
