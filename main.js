@@ -640,8 +640,7 @@ class geometrize_exporter_SvgExporter {
     }
 
     static stylesForShape(shape) {
-        const _g = shape.shape.getType();
-        if (_g == 6) {
+        if (shape.shape instanceof geometrize_shape_Line) {
             return `${geometrize_exporter_SvgExporter.strokeForColor(
                 shape.color
             )} stroke-width="1" fill="none" ${geometrize_exporter_SvgExporter.strokeOpacityForAlpha(
@@ -1038,10 +1037,6 @@ class geometrize_shape_Ellipse {
         return ellipse;
     }
 
-    getType() {
-        return 3;
-    }
-
     getSvgShapeData() {
         return `<ellipse cx="${this.x}" cy="${this.y}" rx="${this.rx}" ry="${
             this.ry
@@ -1095,9 +1090,6 @@ geometrize_shape_Circle.prototype = $extend(
             circle.rx = this.rx;
             circle.ry = this.ry;
             return circle;
-        },
-        getType() {
-            return 5;
         },
         getSvgShapeData() {
             return `<circle cx="${this.x}" cy="${this.y}" r="${this.rx}" ${
@@ -1183,10 +1175,6 @@ class geometrize_shape_Line {
         line.x2 = this.x2;
         line.y2 = this.y2;
         return line;
-    }
-
-    getType() {
-        return 6;
     }
 
     getSvgShapeData() {
@@ -1282,10 +1270,6 @@ class geometrize_shape_Rectangle {
         rectangle.x2 = this.x2;
         rectangle.y2 = this.y2;
         return rectangle;
-    }
-
-    getType() {
-        return 0;
     }
 
     getSvgShapeData() {
@@ -1403,10 +1387,6 @@ class geometrize_shape_RotatedEllipse {
         ellipse.ry = this.ry;
         ellipse.angle = this.angle;
         return ellipse;
-    }
-
-    getType() {
-        return 4;
     }
 
     getSvgShapeData() {
@@ -1545,10 +1525,6 @@ class geometrize_shape_RotatedRectangle {
         rectangle.y2 = this.y2;
         rectangle.angle = this.angle;
         return rectangle;
-    }
-
-    getType() {
-        return 1;
     }
 
     getSvgShapeData() {
@@ -1742,10 +1718,6 @@ class geometrize_shape_Triangle {
         triangle.x3 = this.x3;
         triangle.y3 = this.y3;
         return triangle;
-    }
-
-    getType() {
-        return 2;
     }
 
     getSvgShapeData() {
