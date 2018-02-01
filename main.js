@@ -485,8 +485,7 @@ class geometrize_Model {
             this.buffer,
             this.score
         );
-        const results = [this.addShape(state.shape, state.alpha)];
-        return results;
+        return [this.addShape(state.shape, state.alpha)];
     }
 
     addShape(shape, alpha) {
@@ -522,12 +521,11 @@ class geometrize_Model {
             this.score,
             lines
         );
-        const result = {
+        return {
             score: this.score,
             color,
             shape
         };
-        return result;
     }
 }
 
