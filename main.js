@@ -996,13 +996,13 @@ class geometrize_shape_Ellipse {
         const r = Std.random(3);
         switch (r) {
             case 0:
-            const value = this.x + (-16 + Math.floor(33 * Math.random()));
+            const value = this.x + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x = value < 0 ? 0 : value > max ? max : value;
-            const value1 = this.y + (-16 + Math.floor(33 * Math.random()));
+            const value1 = this.y + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1010,7 +1010,7 @@ class geometrize_shape_Ellipse {
             this.y = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
             case 1:
-            const value2 = this.rx + (-16 + Math.floor(33 * Math.random()));
+            const value2 = this.rx + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (1 > max2) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1018,7 +1018,7 @@ class geometrize_shape_Ellipse {
             this.rx = value2 < 1 ? 1 : value2 > max2 ? max2 : value2;
             break;
             case 2:
-            const value3 = this.ry + (-16 + Math.floor(33 * Math.random()));
+            const value3 = this.ry + (-16 + Std.random(33));
             const max3 = this.xBound - 1;
             if (1 > max3) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1058,13 +1058,13 @@ geometrize_shape_Circle.prototype = $extend(
             const r = Std.random(2);
             switch (r) {
                 case 0:
-                const value = this.x + (-16 + Math.floor(33 * Math.random()));
+                const value = this.x + (-16 + Std.random(33));
                 const max = this.xBound - 1;
                 if (0 > max) {
                     throw new js__$Boot_HaxeError('FAIL: min <= max');
                 }
                 this.x = value < 0 ? 0 : value > max ? max : value;
-                const value1 = this.y + (-16 + Math.floor(33 * Math.random()));
+                const value1 = this.y + (-16 + Std.random(33));
                 const max1 = this.yBound - 1;
                 if (0 > max1) {
                     throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1072,7 +1072,7 @@ geometrize_shape_Circle.prototype = $extend(
                 this.y = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
                 break;
                 case 1:
-                const value2 = this.rx + (-16 + Math.floor(33 * Math.random()));
+                const value2 = this.rx + (-16 + Std.random(33));
                 const max2 = this.xBound - 1;
                 if (1 > max2) {
                     throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1138,13 +1138,13 @@ class geometrize_shape_Line {
         const r = Std.random(4);
         switch (r) {
             case 0:
-            const value = this.x1 + (-16 + Math.floor(33 * Math.random()));
+            const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
-            const value1 = this.y1 + (-16 + Math.floor(33 * Math.random()));
+            const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1152,13 +1152,13 @@ class geometrize_shape_Line {
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
             case 1:
-            const value2 = this.x2 + (-16 + Math.floor(33 * Math.random()));
+            const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
-            const value3 = this.y2 + (-16 + Math.floor(33 * Math.random()));
+            const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1233,13 +1233,13 @@ class geometrize_shape_Rectangle {
         const r = Std.random(2);
         switch (r) {
             case 0:
-            const value = this.x1 + (-16 + Math.floor(33 * Math.random()));
+            const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
-            const value1 = this.y1 + (-16 + Math.floor(33 * Math.random()));
+            const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1247,13 +1247,13 @@ class geometrize_shape_Rectangle {
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
             case 1:
-            const value2 = this.x2 + (-16 + Math.floor(33 * Math.random()));
+            const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
-            const value3 = this.y2 + (-16 + Math.floor(33 * Math.random()));
+            const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1340,13 +1340,13 @@ class geometrize_shape_RotatedEllipse {
         const r = Std.random(4);
         switch (r) {
             case 0:
-            const value = this.x + (-16 + Math.floor(33 * Math.random()));
+            const value = this.x + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x = value < 0 ? 0 : value > max ? max : value;
-            const value1 = this.y + (-16 + Math.floor(33 * Math.random()));
+            const value1 = this.y + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1354,7 +1354,7 @@ class geometrize_shape_RotatedEllipse {
             this.y = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
             case 1:
-            const value2 = this.rx + (-16 + Math.floor(33 * Math.random()));
+            const value2 = this.rx + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (1 > max2) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1362,7 +1362,7 @@ class geometrize_shape_RotatedEllipse {
             this.rx = value2 < 1 ? 1 : value2 > max2 ? max2 : value2;
             break;
             case 2:
-            const value3 = this.ry + (-16 + Math.floor(33 * Math.random()));
+            const value3 = this.ry + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (1 > max3) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1370,7 +1370,7 @@ class geometrize_shape_RotatedEllipse {
             this.ry = value3 < 1 ? 1 : value3 > max3 ? max3 : value3;
             break;
             case 3:
-            const value4 = this.angle + (-4 + Math.floor(9 * Math.random()));
+            const value4 = this.angle + (-4 + Std.random(9));
             this.angle = value4 < 0 ? 0 : value4 > 360 ? 360 : value4;
             break;
         }
@@ -1480,13 +1480,13 @@ class geometrize_shape_RotatedRectangle {
         const r = Std.random(3);
         switch (r) {
             case 0:
-            const value = this.x1 + (-16 + Math.floor(33 * Math.random()));
+            const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
-            const value1 = this.y1 + (-16 + Math.floor(33 * Math.random()));
+            const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1494,13 +1494,13 @@ class geometrize_shape_RotatedRectangle {
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
             case 1:
-            const value2 = this.x2 + (-16 + Math.floor(33 * Math.random()));
+            const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
-            const value3 = this.y2 + (-16 + Math.floor(33 * Math.random()));
+            const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1508,7 +1508,7 @@ class geometrize_shape_RotatedRectangle {
             this.y2 = value3 < 0 ? 0 : value3 > max3 ? max3 : value3;
             break;
             case 2:
-            const value4 = this.angle + (-4 + Math.floor(9 * Math.random()));
+            const value4 = this.angle + (-4 + Std.random(9));
             this.angle = value4 < 0 ? 0 : value4 > 360 ? 360 : value4;
             break;
         }
@@ -1621,7 +1621,7 @@ class geometrize_shape_ShapeFactory {
             throw new js__$Boot_HaxeError('FAIL: lower <= upper');
         }
         return geometrize_shape_ShapeFactory.create(
-            types[Math.floor((upper + 1) * Math.random())],
+            types[Std.random(upper+1)],
             xBound,
             yBound
         );
@@ -1632,10 +1632,10 @@ class geometrize_shape_Triangle {
     constructor(xBound, yBound) {
         this.x1 = Std.random(xBound);
         this.y1 = Std.random(yBound);
-        this.x2 = this.x1 + (-16 + Math.floor(33 * Math.random()));
-        this.y2 = this.y1 + (-16 + Math.floor(33 * Math.random()));
-        this.x3 = this.x1 + (-16 + Math.floor(33 * Math.random()));
-        this.y3 = this.y1 + (-16 + Math.floor(33 * Math.random()));
+        this.x2 = this.x1 + (-16 + Std.random(33));
+        this.y2 = this.y1 + (-16 + Std.random(33));
+        this.x3 = this.x1 + (-16 + Std.random(33));
+        this.y3 = this.y1 + (-16 + Std.random(33));
         this.xBound = xBound;
         this.yBound = yBound;
     }
@@ -1665,13 +1665,13 @@ class geometrize_shape_Triangle {
         const r = Std.random(3);
         switch (r) {
             case 0:
-            const value = this.x1 + (-16 + Math.floor(33 * Math.random()));
+            const value = this.x1 + (-16 + Std.random(33));
             const max = this.xBound - 1;
             if (0 > max) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x1 = value < 0 ? 0 : value > max ? max : value;
-            const value1 = this.y1 + (-16 + Math.floor(33 * Math.random()));
+            const value1 = this.y1 + (-16 + Std.random(33));
             const max1 = this.yBound - 1;
             if (0 > max1) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1679,13 +1679,13 @@ class geometrize_shape_Triangle {
             this.y1 = value1 < 0 ? 0 : value1 > max1 ? max1 : value1;
             break;
             case 1:
-            const value2 = this.x2 + (-16 + Math.floor(33 * Math.random()));
+            const value2 = this.x2 + (-16 + Std.random(33));
             const max2 = this.xBound - 1;
             if (0 > max2) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x2 = value2 < 0 ? 0 : value2 > max2 ? max2 : value2;
-            const value3 = this.y2 + (-16 + Math.floor(33 * Math.random()));
+            const value3 = this.y2 + (-16 + Std.random(33));
             const max3 = this.yBound - 1;
             if (0 > max3) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
@@ -1693,13 +1693,13 @@ class geometrize_shape_Triangle {
             this.y2 = value3 < 0 ? 0 : value3 > max3 ? max3 : value3;
             break;
             case 2:
-            const value4 = this.x3 + (-16 + Math.floor(33 * Math.random()));
+            const value4 = this.x3 + (-16 + Std.random(33));
             const max4 = this.xBound - 1;
             if (0 > max4) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
             }
             this.x3 = value4 < 0 ? 0 : value4 > max4 ? max4 : value4;
-            const value5 = this.y3 + (-16 + Math.floor(33 * Math.random()));
+            const value5 = this.y3 + (-16 + Std.random(33));
             const max5 = this.yBound - 1;
             if (0 > max5) {
                 throw new js__$Boot_HaxeError('FAIL: min <= max');
